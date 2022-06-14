@@ -1,4 +1,4 @@
-arjun/justgra/outputFiles*
-arjun/watGraI/outputFiles*
-Sim-Outputs/
-watGraI/outputFiles
+simFiles/justgra/outputFiles*
+simFiles/watGraI/outputFiles*
+simOutputs/
+refFiles/outputFiles
