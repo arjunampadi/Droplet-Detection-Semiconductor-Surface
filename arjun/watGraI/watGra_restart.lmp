@@ -1,0 +1,43 @@
+echo		screen
+units		real
+atom_style	full
+boundary	p p f
+processors 3 3 2
+#####################  Include  ###########################
+
+read_restart	prorun.restart
+include	group.lmp
+include 	potential.lmp
+
+######################  Neighbor  ########################## 
+
+neighbor	2 bin
+neigh_modify    every 1 delay 0 check yes 
+
+#####################  Initialization  #####################
+
+
+#####################  Thermo log file #####################
+
+compute	tempW wat temp
+thermo_style    custom step temp c_tempW press pe ke etotal
+log             outputFiles/thermo_re.log
+
+#####################  Minimization  #######################
+
+thermo          1000 
+variable		posx equal -xcm(wat,x)
+variable		posy equal -xcm(wat,y)
+displace_atoms		wat move v_posx v_posy 0 units box
+reset_timestep	0
+#####################  Equilibration run  ##################
+#fix bal all balance 1000 1.05 shift z 10 1.05
+dump		dmpall all dcd 1000 outputFiles/watGra_re.dcd 
+timestep	1.0
+fix		pull wat spring tether 1000.0 0 0 NULL 0.0
+fix		zwalls all wall/reflect zlo EDGE zhi EDGE
+fix 		fxnveg gnc nve
+fix 		fxnvec wat nve
+dump            dmpvel_gra crop custom 6 outputFiles/velLgra.dat id vx vy vz
+run		200000
+reset_timestep	0

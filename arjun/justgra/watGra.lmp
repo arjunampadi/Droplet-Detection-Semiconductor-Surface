@@ -1,0 +1,48 @@
+echo		screen
+units		real
+atom_style	full
+boundary	p p f
+#processors 3 3 2
+#####################  Include  ###########################
+
+read_data	inputFiles/Gnc.lmpsys
+include	group.lmp
+include 	potential.lmp
+
+######################  Neighbor  ########################## 
+
+neighbor	2 bin
+neigh_modify    every 1 delay 0 check yes 
+
+#####################  Initialization  #####################
+
+variable	seed equal ${index}*56096
+velocity	gnc create ${Tequil} ${seed} mom yes rot yes dist gaussian
+
+#####################  Thermo log file #####################
+
+thermo_style    custom step temp press pe ke etotal
+log             outputFiles/thermo.log
+
+#####################  Minimization  #######################
+
+thermo          1000 
+fix		fxside gnc setforce 0.0 0.0 0.0
+minimize 	1.0e-6 1.0e-6 100000 100000
+unfix		fxside
+reset_timestep	0
+#####################  Equilibration run  ##################
+fix bal all balance 1000 1.05 shift z 10 1.05
+dump		dmpall all dcd 1000 outputFiles/watGra.dcd 
+timestep	1.0
+fix		fxnvtg gnc nvt temp ${Tequil} ${Tequil} 100.0
+run 		1000000
+unfix 		fxnvtg
+reset_timestep	0
+fix 		fxnveg gnc nve
+run		100000
+reset_timestep	0
+####################  Production run #######################
+
+run 		2000000
+write_restart	prorun.restart

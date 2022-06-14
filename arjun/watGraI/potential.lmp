@@ -1,0 +1,28 @@
+# Comment out shake in lammps script
+
+# Atom Type
+#  H 	1
+#  O 	2
+
+pair_style	hybrid lj/cut/coul/long 10.0 10.0 airebo 2.0 1 1 
+kspace_style	pppm 1.0e-4 
+kspace_modify	slab 3.0
+
+set 		type 1 charge  0.41
+set 		type 2 charge -0.82
+
+mass 		1 1.008
+mass 		2 15.9994
+
+bond_style   	harmonic
+angle_style  	harmonic
+pair_modify  	mix arithmetic shift yes
+
+bond_coeff      1 1059.162 1.012	#O-H Bond
+angle_coeff     1 75.90	   113.24	#H-O-H Angle
+
+pair_coeff   	* * lj/cut/coul/long 0.0 0.0		
+pair_coeff   	2 * lj/cut/coul/long 0.09369 3.19  	
+pair_coeff   	1 2 lj/cut/coul/long 0.0 0.0		
+pair_coeff      2 2 lj/cut/coul/long 0.1554253 3.165492	
+pair_coeff	* * airebo inputFiles/CH.airebo_real NULL NULL C 

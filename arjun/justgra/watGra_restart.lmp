@@ -1,0 +1,34 @@
+echo		screen
+units		real
+atom_style	full
+boundary	p p f
+processors 3 3 2
+#####################  Include  ###########################
+
+read_restart	prorun.restart
+include	group.lmp
+include 	potential.lmp
+
+######################  Neighbor  ########################## 
+
+neighbor	2 bin
+neigh_modify    every 1 delay 0 check yes 
+
+#####################  Initialization  #####################
+
+
+#####################  Thermo log file #####################
+thermo          1000 
+thermo_style    custom step temp press pe ke etotal
+log             outputFiles/thermo.log
+
+#####################  Minimization  #######################
+reset_timestep	0
+
+#####################  Equilibration run  ##################
+#fix bal all balance 1000 1.05 shift z 10 1.05
+timestep	1.0
+fix 		fxnveg gnc nve
+dump            dmpvel_gra crop custom 6 outputFiles/velLgra.dat id vx vy vz
+run		200000
+reset_timestep	0

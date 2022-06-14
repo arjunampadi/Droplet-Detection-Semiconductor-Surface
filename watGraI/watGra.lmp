@@ -1,0 +1,52 @@
+echo		screen
+units		real
+atom_style	full
+boundary	p p f
+
+#####################  Include  ###########################
+
+read_data	${fname}/inputFiles/waterGnc.lmpsys
+include		${fname}/group.lmp
+include 	${fname}/${pfile}.lmp
+
+######################  Neighbor  ########################## 
+
+neighbor	3 bin
+neigh_modify    every 5 delay 0 check yes 
+
+#####################  Initialization  #####################
+
+variable	seed equal ${index}*56096
+velocity	wat create ${Tequil} ${seed} mom yes rot yes dist gaussian
+velocity	mobileGra create ${Tequil} ${seed} mom yes rot yes dist gaussian
+
+#####################  Thermo log file #####################
+
+compute		tempW wat temp
+thermo_style    custom step temp c_tempW press pe ke etotal
+log             ${fname}/outputFiles/thermo.log
+
+#####################  Minimization  #######################
+
+thermo          100  
+fix		fxside fixGra setforce 0.0 0.0 0.0
+minimize 	1.0e-6 1.0e-6 100000 100000
+
+#####################  Equilibration run  ##################
+ 
+timestep	1.0
+fix		fxnvtg gnc nvt temp ${Tequil} ${Tequil} 100.0
+fix		fxnvtc wat nvt temp ${Tequil} ${Tequil} 100.0
+fix		pull wat spring tether 50.0 20.0 20.0 NULL 0.0
+run 		1000000
+unfix 		fxnvtg
+unfix 		fxnvtc
+
+fix 		fxnveg gnc nve
+fix 		fxnvec wat nve
+run		1000000
+
+####################  Production run #######################
+
+dump		dmpall all dcd 100 ${fname}/outputFiles/watGra.dcd 
+run 		200000

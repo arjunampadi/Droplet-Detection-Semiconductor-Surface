@@ -1,0 +1,23 @@
+tolerance 2
+
+output waterBoxPrime.pdb
+
+structure WaterSingle.pdb 
+number 2330
+inside box -20.5 -20.5 1.5 20.5 20.5 41.50
+end structure
+
+structure gnc.pdb
+number 1
+fixed 0. 0. 0. 0. 0. 0.
+end structure
+
+# cylinder a1 b1 c1 a2 b2 c2 d l
+# a1 b1 c1 - the point where the cylinder starts
+# a2 b2 c2 - the direction
+# d - radius
+# l - length
+
+# inside cube xmin ymin zmin d
+# inside box xmin ymin zmin xmax ymax zmax
+# inside sphere a1 b1 c1 d

@@ -1,0 +1,10 @@
+#!/bin/bash
+#PBS -l walltime=168:00:00
+#PBS -l select=1:ncpus=40
+tpdir=`echo $PBS_JOBID | cut -f 1 -d .`
+tempdir=$HOME/scratch/abhi_
+mkdir -p $tempdir
+cd $tempdir
+cp -R $PBS_O_WORKDIR/FolderName/* .
+mpiexec.hydra -np 20 -genv OMP_NUM_THREADS=1 -genv I_MPI_PIN=1 -genv I_MPI_FABRICS=shm:ofi -hostfile $PBS_NODEFILE /lfs/usrhome/phd/am16d016/software/lammps-3Mar20/src/lmp_mpi -in ./bmimBf4Gra.lmp -var index 99 -var Tequil 888 -var Pequil 5.5 -var dT 777
+#mv ../abhi_ $PBS_O_WORKDIR/OUTPUT/.

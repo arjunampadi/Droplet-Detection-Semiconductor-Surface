@@ -1,0 +1,13 @@
+region 		Lfix block -42 -38 INF INF INF INF
+region		Rfix block 78 82 INF INF INF INF
+
+group		Lfix region Lfix
+group		Rfix region Rfix
+group		fixed union Lfix Rfix
+group 		gnc type 3
+group		wat subtract all gnc
+
+group		fixGra intersect gnc fixed
+group		mobile subtract all fixGra
+group 		mobileGra subtract gnc fixGra
+

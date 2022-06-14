@@ -1,0 +1,58 @@
+echo		screen
+units		real
+atom_style	full
+boundary	p p f
+#processors 3 3 2
+#####################  Include  ###########################
+
+read_data	inputFiles/waterGnc.lmpsys
+include	group.lmp
+include 	potential.lmp
+
+######################  Neighbor  ########################## 
+
+neighbor	2 bin
+neigh_modify    every 1 delay 0 check yes 
+
+#####################  Initialization  #####################
+
+variable	seed equal ${index}*56096
+velocity	wat create ${Tequil} ${seed} mom yes rot yes dist gaussian
+velocity	gnc create ${Tequil} ${seed} mom yes rot yes dist gaussian
+
+#####################  Thermo log file #####################
+
+compute	tempW wat temp
+thermo_style    custom step temp c_tempW press pe ke etotal
+log             outputFiles/thermo.log
+
+#####################  Minimization  #######################
+
+thermo          1000 
+fix		fxside gnc setforce 0.0 0.0 0.0
+minimize 	1.0e-6 1.0e-6 100000 100000
+unfix		fxside
+variable		posx equal -xcm(wat,x)
+variable		posy equal -xcm(wat,y)
+displace_atoms		wat move v_posx v_posy 0 units box
+reset_timestep	0
+#####################  Equilibration run  ##################
+fix bal all balance 1000 1.05 shift z 10 1.05
+dump		dmpall all dcd 1000 outputFiles/watGra.dcd 
+timestep	1.0
+fix		fxnvtg gnc nvt temp ${Tequil} ${Tequil} 100.0
+fix		fxnvtc wat nvt temp ${Tequil} ${Tequil} 100.0
+fix		pull wat spring tether 1000.0 0 0 NULL 0.0
+fix zwalls all wall/reflect zlo EDGE zhi EDGE
+run 		1000000
+unfix 		fxnvtg
+unfix 		fxnvtc
+reset_timestep	0
+fix 		fxnveg gnc nve
+fix 		fxnvec wat nve
+run		100000
+reset_timestep	0
+####################  Production run #######################
+
+run 		2000000
+write_restart	prorun.restart

@@ -1,0 +1,20 @@
+LAMMPS (29 Oct 2020)
+echo		screen
+Reading restart file ...
+  restart file = 29 Oct 2020, LAMMPS = 29 Oct 2020
+  restoring atom style full from restart
+  orthogonal box = (-76.573000 -76.133000 -50.000000) to (76.573000 76.133000 50.000000)
+  3 by 3 by 2 MPI processor grid
+  pair style airebo stores no restart info
+  8928 atoms
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0.0      0.0      0.0     
+  special bond factors coul:  0.0      0.0      0.0     
+     0 = max # of 1-2 neighbors
+     0 = max # of 1-3 neighbors
+     0 = max # of 1-4 neighbors
+     1 = max # of special neighbors
+  special bonds CPU = 0.002 seconds
+  read_restart CPU = 0.014 seconds
+8928 atoms in group gnc
+608 atoms in group crop
