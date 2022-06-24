@@ -19,7 +19,7 @@ angle_style  	harmonic
 pair_modify  	mix arithmetic shift yes
 
 bond_coeff      1 1059.162 1.012	#O-H Bond
-angle_coeff     1 75.90	   113.24	#H-O-H Angle
+angle_coeff     1 75.90 113.24	#H-O-H Angle
 
 pair_coeff   	* * lj/cut/coul/long 0.0 0.0		
 pair_coeff   	2 * lj/cut/coul/long 0.09369 3.19  	

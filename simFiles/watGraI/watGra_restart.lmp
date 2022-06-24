@@ -39,5 +39,5 @@ fix		zwalls all wall/reflect zlo EDGE zhi EDGE
 fix 		fxnveg gnc nve
 fix 		fxnvec wat nve
 dump            dmpvel_gra crop custom 6 outputFiles/velLgra.dat id vx vy vz
-run		200000
+run		12000
 reset_timestep	0

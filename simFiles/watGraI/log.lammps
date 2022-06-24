@@ -18,13 +18,13 @@ Finding 1-2 1-3 1-4 neighbors ...
      1 = max # of 1-3 neighbors
      1 = max # of 1-4 neighbors
      2 = max # of special neighbors
-  special bonds CPU = 0.003 seconds
-  read_restart CPU = 0.022 seconds
+  special bonds CPU = 0.004 seconds
+  read_restart CPU = 0.033 seconds
 8928 atoms in group gnc
 6990 atoms in group wat
 15918 atoms in group mobile
-4983 atoms in group cropall
-618 atoms in group crop
+8201 atoms in group cropall
+1373 atoms in group crop
 Setting atom values ...
   4660 settings made for charge
 Setting atom values ...
