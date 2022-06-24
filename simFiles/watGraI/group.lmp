@@ -1,7 +1,7 @@
 group 		gnc type 3
 group		wat subtract all gnc
 group		mobile union gnc wat
-region          cropped block -30 30 -30 30 INF INF
+region          cropped block -60 -30 20 50 INF INF
 group		cropall region cropped
 group		crop intersect gnc cropall
 
