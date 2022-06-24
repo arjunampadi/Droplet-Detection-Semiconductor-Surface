@@ -30,5 +30,5 @@ reset_timestep	0
 timestep	1.0
 fix 		fxnveg gnc nve
 dump            dmpvel_gra crop custom 6 outputFiles/velLgra.dat id vx vy vz
-run		12000
+run		15000
 reset_timestep	0
